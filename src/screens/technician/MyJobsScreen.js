@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { DataContext } from '../../context/DataContext';
 
 export default function MyJobsScreen() {

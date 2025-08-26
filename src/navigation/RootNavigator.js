@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AuthContext } from '/context/AuthContext';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import LoginScreen from '../screens/LoginScreen';
-import UsersScreen from '../screens/admin/UsersScreen';
 import RequestsScreen from '../screens/admin/RequestsScreen';
-import NewTicketScreen from '../screens/customer/NewTicketScreen';
+import UsersScreen from '../screens/admin/UsersScreen';
 import MyTicketsScreen from '../screens/customer/MyTicketsScreen';
+import NewTicketScreen from '../screens/customer/NewTicketScreen';
 import MyJobsScreen from '../screens/technician/MyJobsScreen';
-
-const Stack = createNativeStackNavigator();
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function AdminTabs() {
@@ -43,8 +42,8 @@ export default function RootNavigator() {
 
   if (!currentUser) {
     return (
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+       <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     );
   }

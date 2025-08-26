@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "rn-service-desk",
-    "slug": "rn-service-desk",
+    "name": "ServiceHelpDesk",
+    "slug": "ServiceHelpDesk",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "rnservicedesk",
+    "scheme": "servicehelpdesk",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

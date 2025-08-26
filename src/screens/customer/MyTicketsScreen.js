@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { DataContext } from '../../context/DataContext';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function MyTicketsScreen() {
   const { tickets } = useContext(DataContext);

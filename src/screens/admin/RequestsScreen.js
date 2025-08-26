@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, Alert, Picker } from 'react-native';
 import { DataContext } from '../../context/DataContext';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function RequestsScreen() {
   const { tickets, users, assignTechnician } = useContext(DataContext);

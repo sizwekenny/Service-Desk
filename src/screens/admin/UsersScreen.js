@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { DataContext } from '../../context/DataContext';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 
 const ROLES = ['Admin', 'Customer', 'Technician'];
 
