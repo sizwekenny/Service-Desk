@@ -3,11 +3,11 @@ import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';
 
-export default function MyTicketsScreen({ navigation }) {
+export default function MyTicketsScreen() {
   const { tickets } = useContext(DataContext);
   const { currentUser, logout } = useContext(AuthContext);
 
-  // If somehow this screen renders without a user, show nothing
+  // If user is not logged in, show message
   if (!currentUser) {
     return (
       <View style={styles.container}>
@@ -28,13 +28,9 @@ export default function MyTicketsScreen({ navigation }) {
     </View>
   );
 
+  // Safe logout
   const handleLogout = () => {
     logout();
-    // Optional: navigate to login after logout
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { DataContext } from '../../context/DataContext';
@@ -7,7 +7,18 @@ export default function MyJobsScreen() {
   const { tickets, completeTicket } = useContext(DataContext);
   const { currentUser, logout } = useContext(AuthContext);
 
-  const myJobs = tickets.filter(t => t.assignedTechnicianId === currentUser.id && t.status !== 'Completed');
+  // If technician is not logged in, show message
+  if (!currentUser) {
+    return (
+      <View style={styles.container}>
+        <Text>User not logged in.</Text>
+      </View>
+    );
+  }
+
+  const myJobs = tickets.filter(
+    t => t.assignedTechnicianId === currentUser.id && t.status !== 'Completed'
+  );
 
   const onComplete = (ticketId) => {
     completeTicket(ticketId);
@@ -25,19 +36,27 @@ export default function MyJobsScreen() {
     </View>
   );
 
+  // Safe logout
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.titleMain}>My Jobs</Text>
-        <Button title="Logout" onPress={logout} />
+        <Button title="Logout" onPress={handleLogout} />
       </View>
 
-      <FlatList
-        data={myJobs}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListEmptyComponent={<Text>No assigned jobs</Text>}
-      />
+      {myJobs.length === 0 ? (
+        <Text>No assigned jobs</Text>
+      ) : (
+        <FlatList
+          data={myJobs}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 }

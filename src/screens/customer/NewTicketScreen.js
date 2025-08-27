@@ -11,7 +11,7 @@ export default function NewTicketScreen() {
   const [contact, setContact] = useState('');
   const [description, setDescription] = useState('');
 
-  // Early return if user is not logged in
+  // If user is not logged in, show a message
   if (!currentUser) {
     return (
       <View style={styles.container}>
@@ -32,7 +32,7 @@ export default function NewTicketScreen() {
     setDescription('');
   };
 
-  // Safe logout: just call logout, RootNavigator handles redirect
+  // Safe logout: just call logout
   const handleLogout = () => {
     logout();
   };
