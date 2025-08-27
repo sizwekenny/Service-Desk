@@ -1,8 +1,10 @@
+// navigation/RootNavigator.js
 import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AuthContext } from "../context/AuthContext";
 
+import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
 import RequestsScreen from "../screens/admin/RequestsScreen";
@@ -14,7 +16,7 @@ import MyJobsScreen from "../screens/technician/MyJobsScreen";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Role-based tabs
+// Role-based tab navigators
 function AdminTabs() {
   return (
     <Tab.Navigator>
@@ -24,17 +26,11 @@ function AdminTabs() {
   );
 }
 
-function CustomerTabs({ currentUser }) {
-  if (!currentUser) return null; // safety check
-
+function CustomerTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="New Ticket">
-        {props => <NewTicketScreen {...props} currentUser={currentUser} />}
-      </Tab.Screen>
-      <Tab.Screen name="My Tickets">
-        {props => <MyTicketsScreen {...props} currentUser={currentUser} />}
-      </Tab.Screen>
+      <Tab.Screen name="New Ticket" component={NewTicketScreen} />
+      <Tab.Screen name="My Tickets" component={MyTicketsScreen} />
     </Tab.Navigator>
   );
 }
@@ -49,32 +45,47 @@ function TechnicianTabs() {
 
 // Main navigator
 export default function RootNavigator() {
-  const { currentUser, showSignup } = useContext(AuthContext);
+  const { currentUser, showSignup, showHome } = useContext(AuthContext);
 
-  // Show signup screen if triggered
-  if (showSignup) {
-    return <SignupScreen />;
+  // Show Home screen if triggered
+  if (showHome) {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    );
   }
 
-  // If not logged in, show login screen
+  // Show Signup screen if triggered
+  if (showSignup) {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    );
+  }
+
+  // Show Login screen if not logged in
   if (!currentUser) {
     return (
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     );
   }
 
-  // Logged-in routes
+  // Logged-in routes based on role
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {currentUser.role === "Admin" && <Stack.Screen name="Admin" component={AdminTabs} />}
-      {currentUser.role === "Customer" && (
-        <Stack.Screen name="Customer">
-          {props => <CustomerTabs {...props} currentUser={currentUser} />}
-        </Stack.Screen>
+      {currentUser.role.toLowerCase() === "admin" && (
+        <Stack.Screen name="Admin" component={AdminTabs} />
       )}
-      {currentUser.role === "Technician" && <Stack.Screen name="Technician" component={TechnicianTabs} />}
+      {currentUser.role.toLowerCase() === "customer" && (
+        <Stack.Screen name="Customer" component={CustomerTabs} />
+      )}
+      {currentUser.role.toLowerCase() === "technician" && (
+        <Stack.Screen name="Technician" component={TechnicianTabs} />
+      )}
     </Stack.Navigator>
   );
 }
