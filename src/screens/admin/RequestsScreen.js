@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert, Picker } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker'; // <-- fix here
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';
 

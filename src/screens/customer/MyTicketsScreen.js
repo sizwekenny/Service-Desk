@@ -3,9 +3,18 @@ import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';
 
-export default function MyTicketsScreen() {
+export default function MyTicketsScreen({ navigation }) {
   const { tickets } = useContext(DataContext);
   const { currentUser, logout } = useContext(AuthContext);
+
+  // If somehow this screen renders without a user, show nothing
+  if (!currentUser) {
+    return (
+      <View style={styles.container}>
+        <Text>User not logged in.</Text>
+      </View>
+    );
+  }
 
   const myTickets = tickets.filter(t => t.customerId === currentUser.id);
 
@@ -19,19 +28,31 @@ export default function MyTicketsScreen() {
     </View>
   );
 
+  const handleLogout = () => {
+    logout();
+    // Optional: navigate to login after logout
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.titleMain}>My Tickets</Text>
-        <Button title="Logout" onPress={logout} />
+        <Button title="Logout" onPress={handleLogout} />
       </View>
 
-      <FlatList
-        data={myTickets}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListEmptyComponent={<Text>No tickets yet</Text>}
-      />
+      {myTickets.length === 0 ? (
+        <Text>No tickets yet</Text>
+      ) : (
+        <FlatList
+          data={myTickets}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 }

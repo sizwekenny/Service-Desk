@@ -11,6 +11,15 @@ export default function NewTicketScreen() {
   const [contact, setContact] = useState('');
   const [description, setDescription] = useState('');
 
+  // Early return if user is not logged in
+  if (!currentUser) {
+    return (
+      <View style={styles.container}>
+        <Text>User not logged in.</Text>
+      </View>
+    );
+  }
+
   const onSubmit = () => {
     if (!address || !contact || !description) {
       Alert.alert('Missing info', 'Please fill all fields');
@@ -18,19 +27,42 @@ export default function NewTicketScreen() {
     }
     addTicket({ customerId: currentUser.id, address, contact, description });
     Alert.alert('Success', 'Ticket created');
-    setAddress(''); setContact(''); setDescription('');
+    setAddress('');
+    setContact('');
+    setDescription('');
+  };
+
+  // Safe logout: just call logout, RootNavigator handles redirect
+  const handleLogout = () => {
+    logout();
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.title}>New Ticket</Text>
-        <Button title="Logout" onPress={logout} />
+        <Button title="Logout" onPress={handleLogout} />
       </View>
 
-      <TextInput style={styles.input} placeholder="Address" value={address} onChangeText={setAddress} />
-      <TextInput style={styles.input} placeholder="Contact" value={contact} onChangeText={setContact} />
-      <TextInput style={styles.input} placeholder="Issue Description" value={description} onChangeText={setDescription} multiline />
+      <TextInput
+        style={styles.input}
+        placeholder="Address"
+        value={address}
+        onChangeText={setAddress}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contact"
+        value={contact}
+        onChangeText={setContact}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Issue Description"
+        value={description}
+        onChangeText={setDescription}
+        multiline
+      />
 
       <Button title="Submit Ticket" onPress={onSubmit} />
     </View>

@@ -2,22 +2,25 @@ import React, { useContext, useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
-export default function LoginScreen() {
-  const { login, setShowSignup } = useContext(AuthContext);
-  const [email, setEmail] = useState("admin@demo.com");
-  const [password, setPassword] = useState("admin123");
+export default function SignupScreen() {
+  const { signupCustomer, setShowSignup } = useContext(AuthContext);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onSubmit = () => {
     try {
-      login(email.trim(), password);
+      signupCustomer(name.trim(), email.trim(), password);
+      setShowSignup(false);
     } catch (e) {
-      Alert.alert("Login failed", e.message);
+      Alert.alert("Signup failed", e.message);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Service Desk</Text>
+      <Text style={styles.title}>Customer Sign Up</Text>
+      <TextInput style={styles.input} placeholder="Full Name" value={name} onChangeText={setName} />
       <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
       <TextInput
         style={styles.input}
@@ -26,16 +29,14 @@ export default function LoginScreen() {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={onSubmit} />
-      <Button title="Sign Up (Customers Only)" onPress={() => setShowSignup(true)} />
-      <Text style={styles.help}>Try admin: admin@demo.com / admin123</Text>
+      <Button title="Sign Up" onPress={onSubmit} />
+      <Button title="Back to Login" onPress={() => setShowSignup(false)} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, justifyContent: "center" },
-  title: { fontSize: 28, fontWeight: "bold", marginBottom: 24, textAlign: "center" },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 24, textAlign: "center" },
   input: { borderWidth: 1, borderColor: "#ccc", padding: 12, borderRadius: 8, marginBottom: 12 },
-  help: { marginTop: 12, textAlign: "center", color: "#666" },
 });

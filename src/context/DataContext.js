@@ -10,8 +10,9 @@ export function DataProvider({ children }) {
   ]);
   const [tickets, setTickets] = useState([]);
 
+  // Add new user (used for signup or admin)
   const addUser = (user) => {
-    setUsers((prev) => {
+    setUsers(prev => {
       if (prev.some(u => u.email.toLowerCase() === user.email.toLowerCase())) {
         throw new Error('Email already exists');
       }
@@ -19,6 +20,7 @@ export function DataProvider({ children }) {
     });
   };
 
+  // Add new ticket
   const addTicket = ({ customerId, address, contact, description }) => {
     const newTicket = {
       id: makeId(),
@@ -30,10 +32,11 @@ export function DataProvider({ children }) {
       assignedTechnicianId: null,
       createdAt: Date.now(),
     };
-    setTickets((prev) => [newTicket, ...prev]);
+    setTickets(prev => [newTicket, ...prev]);
     return newTicket;
   };
 
+  // Assign technician to ticket
   const assignTechnician = (ticketId, technicianId) => {
     setTickets(prev => prev.map(t => {
       if (t.id === ticketId) {
@@ -43,9 +46,14 @@ export function DataProvider({ children }) {
     }));
   };
 
+  // Mark ticket as completed
   const completeTicket = (ticketId) => {
     setTickets(prev => prev.map(t => (t.id === ticketId ? { ...t, status: 'Completed' } : t)));
   };
+
+  // Helpers for filtering users by role
+  const getTechnicians = () => users.filter(u => u.role === 'Technician');
+  const getCustomers = () => users.filter(u => u.role === 'Customer');
 
   const value = useMemo(() => ({
     users,
@@ -54,7 +62,8 @@ export function DataProvider({ children }) {
     addTicket,
     assignTechnician,
     completeTicket,
-    getTechnicians: () => users.filter(u => u.role === 'Technician'),
+    getTechnicians,
+    getCustomers,
   }), [users, tickets]);
 
   return (
