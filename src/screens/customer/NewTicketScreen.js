@@ -32,7 +32,7 @@ export default function NewTicketScreen() {
     setDescription('');
   };
 
-  // Safe logout: just call logout
+ 
   const handleLogout = () => {
     logout();
   };

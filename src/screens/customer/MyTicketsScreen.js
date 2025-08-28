@@ -7,7 +7,7 @@ export default function MyTicketsScreen() {
   const { tickets } = useContext(DataContext);
   const { currentUser, logout } = useContext(AuthContext);
 
-  // If user is not logged in, show message
+ 
   if (!currentUser) {
     return (
       <View style={styles.container}>
@@ -28,7 +28,7 @@ export default function MyTicketsScreen() {
     </View>
   );
 
-  // Safe logout
+  
   const handleLogout = () => {
     logout();
   };

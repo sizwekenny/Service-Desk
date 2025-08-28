@@ -1,8 +1,8 @@
+import { Picker } from '@react-native-picker/picker'; 
 import React, { useContext, useState } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; // <-- fix here
-import { DataContext } from '../../context/DataContext';
+import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
+import { DataContext } from '../../context/DataContext';
 
 export default function RequestsScreen() {
   const { tickets, users, assignTechnician } = useContext(DataContext);

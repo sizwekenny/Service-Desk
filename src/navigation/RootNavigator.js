@@ -1,4 +1,4 @@
-// navigation/RootNavigator.js
+
 import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -13,11 +13,13 @@ import MyTicketsScreen from "../screens/customer/MyTicketsScreen";
 import NewTicketScreen from "../screens/customer/NewTicketScreen";
 import MyJobsScreen from "../screens/technician/MyJobsScreen";
 import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet } from "react-native";
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Role-based tab navigators
+
 function AdminTabs() {
   return (
     <Tab.Navigator
@@ -80,16 +82,31 @@ function TechnicianTabs() {
   );
 }
 
-// Main navigator
-export default function RootNavigator() {
-  const { currentUser, showSignup, showHome } = useContext(AuthContext);
 
-  // Show Signup screen if triggered
+export default function RootNavigator() {
+  const { currentUser, showSignup, showHome, loggedOut, setLoggedOut } = useContext(AuthContext);
+ React.useEffect(() => {
+    if (loggedOut) {
+      const timer = setTimeout(() => setLoggedOut(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [loggedOut, setLoggedOut]);
+
   if (showSignup) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Signup" component={SignupScreen} />
       </Stack.Navigator>
+    );
+  }
+  if (loggedOut) {
+    return (
+      <View style={styles.centered}>
+        <View style={styles.successBox}>
+          <Ionicons name="checkmark-circle" size={48} color="#10b981" />
+          <Text style={styles.successText}>You have successfully logged out</Text>
+        </View>
+      </View>
     );
   }
 
@@ -101,7 +118,7 @@ export default function RootNavigator() {
     );
   }
 
-  // Show Login screen if not logged in
+  
   if (!currentUser) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -110,7 +127,7 @@ export default function RootNavigator() {
     );
   }
 
-  // Logged-in routes based on role
+  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {currentUser.role.toLowerCase() === "admin" && (
@@ -125,3 +142,8 @@ export default function RootNavigator() {
     </Stack.Navigator>
   );
 }
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
+  successBox: { alignItems: 'center', padding: 24, borderRadius: 16, backgroundColor: '#f0fdf4', elevation: 2 },
+  successText: { marginTop: 12, fontSize: 18, color: '#10b981', fontWeight: 'bold' },
+});

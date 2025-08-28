@@ -17,7 +17,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Home button at the top */}
+     
       <TouchableOpacity style={styles.homeBtn} onPress={() => setShowHome(true)}>
         <Text style={styles.homeText}>🏠 Home</Text>
       </TouchableOpacity>
@@ -38,10 +38,10 @@ export default function LoginScreen() {
         onChangeText={setPassword}
       />
       
-      {/* Login button */}
+    
       <Button title="Login" onPress={onSubmit} />
 
-      {/* Spacing before signup link */}
+     
       <View style={{ marginTop: 16, alignItems: "center" }}>
         <TouchableOpacity onPress={() => setShowSignup(true)}>
           <Text style={styles.signupText}>Don’t have an account yet? Create one</Text>
@@ -55,7 +55,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, justifyContent: "center" },
-  homeBtn: { position: "absolute", top: 40, left: 20 }, // top-left corner
+  homeBtn: { position: "absolute", top: 40, left: 20 }, 
   homeText: { color: "#007BFF", fontSize: 16, fontWeight: "600" },
   title: { fontSize: 28, fontWeight: "bold", marginBottom: 24, textAlign: "center" },
   input: {
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
   },
   help: { marginTop: 12, textAlign: "center", color: "#666" },
   signupText: {
-    color: "#007BFF", // Blue link
-    fontSize: 14, // smaller than login button text
+    color: "#007BFF", 
+    fontSize: 14, 
     textAlign: "center",
   },
 });

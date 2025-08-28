@@ -1,4 +1,4 @@
-// context/AuthContext.js
+
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { DataContext } from './DataContext';
 
@@ -8,7 +8,8 @@ export function AuthProvider({ children }) {
   const { users, addUser } = useContext(DataContext);
   const [currentUser, setCurrentUser] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
-  const [showHome, setShowHome] = useState(false); // ✅ NEW
+  const [showHome, setShowHome] = useState(false); 
+  const [loggedOut, setLoggedOut] = useState(false);
 
   const login = (email, password) => {
     const user = users.find(
@@ -22,7 +23,8 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setCurrentUser(null);
     setShowSignup(false);
-    setShowHome(false); // ✅ reset home
+    setShowHome(false); 
+    setLoggedOut(true); 
   };
 
   const signupCustomer = (name, email, password) => {
@@ -40,10 +42,13 @@ export function AuthProvider({ children }) {
       signupCustomer,
       showSignup,
       setShowSignup,
-      showHome,        // ✅ export it
-      setShowHome,     // ✅ export setter
+      showHome,        
+      setShowHome, 
+      loggedOut,        
+    setLoggedOut,
+    
     }),
-    [currentUser, showSignup, showHome]
+    [currentUser, showSignup, showHome, loggedOut]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
