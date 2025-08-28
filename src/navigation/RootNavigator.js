@@ -12,6 +12,7 @@ import UsersScreen from "../screens/admin/UsersScreen";
 import MyTicketsScreen from "../screens/customer/MyTicketsScreen";
 import NewTicketScreen from "../screens/customer/NewTicketScreen";
 import MyJobsScreen from "../screens/technician/MyJobsScreen";
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,7 +20,21 @@ const Tab = createBottomTabNavigator();
 // Role-based tab navigators
 function AdminTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+          if (route.name === 'Users') {
+            iconName = 'people-outline';
+          } else if (route.name === 'Requests') {
+            iconName = 'list-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#2563eb',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
       <Tab.Screen name="Users" component={UsersScreen} />
       <Tab.Screen name="Requests" component={RequestsScreen} />
     </Tab.Navigator>
@@ -28,7 +43,21 @@ function AdminTabs() {
 
 function CustomerTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+          if (route.name === 'New Ticket') {
+            iconName = 'add-circle-outline';
+          } else if (route.name === 'My Tickets') {
+            iconName = 'document-text-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#2563eb',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
       <Tab.Screen name="New Ticket" component={NewTicketScreen} />
       <Tab.Screen name="My Tickets" component={MyTicketsScreen} />
     </Tab.Navigator>
@@ -37,7 +66,15 @@ function CustomerTabs() {
 
 function TechnicianTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="briefcase-outline" size={size} color={color} />
+        ),
+        tabBarActiveTintColor: '#2563eb',
+        tabBarInactiveTintColor: 'gray',
+      }}
+    >
       <Tab.Screen name="My Jobs" component={MyJobsScreen} />
     </Tab.Navigator>
   );
@@ -47,20 +84,19 @@ function TechnicianTabs() {
 export default function RootNavigator() {
   const { currentUser, showSignup, showHome } = useContext(AuthContext);
 
-  // Show Home screen if triggered
-  if (showHome) {
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    );
-  }
-
   // Show Signup screen if triggered
   if (showSignup) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    );
+  }
+
+  if (showHome) {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
     );
   }

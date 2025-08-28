@@ -3,19 +3,24 @@ import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
 export default function SignupScreen() {
-  const { signupCustomer, setShowSignup } = useContext(AuthContext);
+  const { signupCustomer, setShowSignup,setShowHome } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = () => {
-    try {
-      signupCustomer(name.trim(), email.trim(), password);
-      setShowSignup(false);
-    } catch (e) {
-      Alert.alert("Signup failed", e.message);
-    }
-  };
+  if (!name.trim() || !email.trim() || !password) {
+    Alert.alert("All fields are required", "Please fill in all fields.");
+    return;
+  }
+  try {
+    signupCustomer(name.trim(), email.trim(), password);
+    setShowSignup(false);
+    setShowHome(true);
+  } catch (e) {
+    Alert.alert("Signup failed", e.message);
+  }
+};
 
   return (
     <View style={styles.container}>
@@ -30,7 +35,7 @@ export default function SignupScreen() {
         onChangeText={setPassword}
       />
       <Button title="Sign Up" onPress={onSubmit} />
-      <Button title="Back to Login" onPress={() => setShowSignup(false)} />
+      <Button title="Back to Home" onPress={() => setShowSignup(false)} />
     </View>
   );
 }
