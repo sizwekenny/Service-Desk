@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';
+import { createTicket } from '../../api/tickets';
 
 export default function NewTicketScreen() {
   const { addTicket } = useContext(DataContext);
@@ -20,17 +21,16 @@ export default function NewTicketScreen() {
     );
   }
 
-  const onSubmit = () => {
-    if (!address || !contact || !description) {
-      Alert.alert('Missing info', 'Please fill all fields');
-      return;
-    }
-    addTicket({ customerId: currentUser.id, address, contact, description });
+ const onSubmit = async () => {
+  if (!address || !contact || !description) { Alert.alert('Missing info', 'Please fill all fields'); return; }
+  try {
+    await createTicket({ address, contact, description });
     Alert.alert('Success', 'Ticket created');
-    setAddress('');
-    setContact('');
-    setDescription('');
-  };
+    setAddress(''); setContact(''); setDescription('');
+  } catch (e) {
+    Alert.alert('Error', e.response?.data?.message || 'Failed to create ticket');
+  }
+};
 
  
   const handleLogout = () => {
