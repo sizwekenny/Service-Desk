@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
-import { Navigation } from "react-native-navigation";
 
 export default function SignupScreen() {
   const { signupCustomer, setShowSignup,setShowHome } = useContext(AuthContext);
@@ -18,7 +17,6 @@ export default function SignupScreen() {
     signupCustomer(name.trim(), email.trim(), password);
     setShowSignup(false);
     setShowHome(true);
-    onclick = Navigation.mytickets;
   } catch (e) {
     Alert.alert("Signup failed", e.message);
   }

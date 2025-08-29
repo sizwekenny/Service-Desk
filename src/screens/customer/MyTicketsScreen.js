@@ -1,14 +1,11 @@
-
+import React, { useContext } from 'react';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { DataContext } from '../../context/DataContext';
-
-import React, { useEffect, useState, useContext } from 'react';
-import { getTickets } from '../../api/tickets';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function MyTicketsScreen() {
+  const { tickets } = useContext(DataContext);
   const { currentUser, logout } = useContext(AuthContext);
-  const [tickets, setTickets] = useState([]);
 
  
   if (!currentUser) {
@@ -18,12 +15,8 @@ export default function MyTicketsScreen() {
       </View>
     );
   }
- useEffect(() => {
-    let mounted = true;
-    getTickets().then(data => { if (mounted) setTickets(data); });
-    return () => { mounted = false; };
-  }, []);
-const myTickets = tickets.filter(t => t.customer_id === currentUser?.id);
+
+  const myTickets = tickets.filter(t => t.customerId === currentUser.id);
 
   const renderItem = ({ item }) => (
     <View style={styles.ticketRow}>
